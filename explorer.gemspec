@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'reel', '~> 0.5'
   spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'celluloid', '~> 0.16'
+  spec.add_dependency 'celluloid-io', '~> 0.16'
 end

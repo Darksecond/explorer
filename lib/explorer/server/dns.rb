@@ -9,12 +9,11 @@ module Explorer
       end
 
       def process(name, resource_class, transaction)
-        transaction.fail!(:NXDomain) unless name_matches?(name)
-
-        case resource_class
-        when Resolv::DNS::Resource::IN::A
+        return transaction.fail!(:NXDomain) unless name_matches?(name)
+        
+        if resource_class == Resolv::DNS::Resource::IN::A
           transaction.respond!('127.0.0.1')
-        when Resolv::DNS::Resource::IN::AAAA
+        elsif resource_class == Resolv::DNS::Resource::IN::AAAA
           transaction.respond!('::1')
         else
           transaction.fail!(:NXDomain)
