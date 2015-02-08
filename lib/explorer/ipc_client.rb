@@ -31,7 +31,7 @@ module Explorer
 
     def tail(io = STDOUT)
       msg = {
-        command: 'tail'
+        command: 'cmd-tail'
       }
       @socket.puts msg.to_json
 
@@ -49,6 +49,14 @@ module Explorer
         dir: dir,
       }
       @socket.puts msg.to_json
+    end
+
+    def cmd_list
+      msg = {
+        command: 'cmd-list'
+      }
+      @socket.puts msg.to_json
+      JSON.parse @socket.readline
     end
 
     def shutdown

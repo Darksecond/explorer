@@ -1,3 +1,4 @@
+require 'rainbow'
 require 'formatador'
 
 module Explorer

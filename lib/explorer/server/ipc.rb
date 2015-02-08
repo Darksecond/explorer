@@ -34,11 +34,22 @@ module Explorer
             socket.puts @servers.hostmap.to_json
           when 'map-add'
             @servers.hostmap[json['map']] = { host: json['host'], port: json['port'].to_i }
-          when 'tail'
+          when 'cmd-tail'
             @servers.log_watcher.add(socket)
           when 'cmd-add'
             @servers.process_manager.add(json['label'], json['cmd'], working_dir: json['dir'] || ENV['PWD'])
             @servers.process_manager.start(json['label']) #TODO Refactor out?
+          when 'cmd-list'
+            socket.puts @servers.process_manager.processes.map { |p|
+              {
+                label: p.label,
+                cmd: p.command,
+                dir: p.working_dir,
+                state: p.state,
+                pid: p.pid,
+                status: p.status.nil? ? nil : p.status.to_i,
+              }
+            }.to_json
           end
         end
       rescue EOFError, JSON::ParserError
