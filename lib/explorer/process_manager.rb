@@ -1,3 +1,5 @@
+require 'dotenv'
+
 module Explorer
   class ProcessManager
     def initialize log_watcher = nil
@@ -12,8 +14,8 @@ module Explorer
     end
 
     def add(label, command, working_dir: ENV['PWD'])
-      #TODO $PORT replacement? (or somewhere else, perhaps)
-      @processes[label] = Process.new(label, command, working_dir: working_dir, log_watcher: @log_watcher)
+      env = load_env(working_dir)
+      @processes[label] = Process.new(label, command, working_dir: working_dir, log_watcher: @log_watcher, env: env)
     end
 
     def remove(label)
@@ -52,6 +54,14 @@ module Explorer
 
     def labels
       @processes.keys
+    end
+
+    private
+
+    def load_env(directory = ENV['PWD'])
+      path = File.join(directory, '.env')
+      return {} unless File.exist?(path)
+      Dotenv::Environment.new(path)
     end
   end
 end
