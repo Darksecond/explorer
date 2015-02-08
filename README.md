@@ -3,6 +3,7 @@
 Explorer is a replacement for Pow! written in Ruby.
 
 [![Dependency Status](https://gemnasium.com/Darksecond/explorer.svg)](https://gemnasium.com/Darksecond/explorer)
+[![Gem Version](https://badge.fury.io/rb/explorer.svg)](http://badge.fury.io/rb/explorer)
 
 ## Installation
 
