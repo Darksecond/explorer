@@ -39,5 +39,12 @@ module Explorer
       ipc = IPCClient.new
       ipc.tail
     end
+
+    desc 'cmd-add LABEL CMD', 'Add command'
+    option :dir
+    def cmd_add(label, cmd)
+      ipc = IPCClient.new
+      ipc.cmd_add(label, cmd, options[:dir])
+    end
   end
 end

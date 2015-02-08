@@ -41,6 +41,16 @@ module Explorer
       end
     end
 
+    def cmd_add(label, cmd, dir=nil)
+      msg = {
+        command: 'cmd-add',
+        label: label,
+        cmd: cmd,
+        dir: dir,
+      }
+      @socket.puts msg.to_json
+    end
+
     def shutdown
       @socket.close if @socket
     end

@@ -36,6 +36,9 @@ module Explorer
             @servers.hostmap[json['map']] = { host: json['host'], port: json['port'].to_i }
           when 'tail'
             @servers.log_watcher.add(socket)
+          when 'cmd-add'
+            @servers.process_manager.add(json['label'], json['cmd'], working_dir: json['dir'] || ENV['PWD'])
+            @servers.process_manager.start(json['label']) #TODO Refactor out?
           end
         end
       rescue EOFError, JSON::ParserError
