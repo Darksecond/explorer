@@ -10,6 +10,7 @@ require 'explorer/request_stream'
 require 'explorer/ipc_client'
 require 'explorer/process'
 require 'explorer/process_manager'
+require 'explorer/log_watcher'
 
 module Explorer
   DATADIR = File.expand_path(File.join(File.dirname(__FILE__), '..', 'data'))

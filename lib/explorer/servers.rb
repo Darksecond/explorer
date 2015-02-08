@@ -4,7 +4,7 @@ module Explorer
   # TODO: Hostmap should be it's own actor; immutable; or thread-safe
   class Servers
     attr_reader :dns_port, :http_port, :https_port, :ipc_file
-    attr_reader :hostmap, :process_manager
+    attr_reader :hostmap, :process_manager, :log_watcher
 
     def initialize dns_port: 23400, http_port: 23401, https_port: 23402, hostmap: {}, ipc_file: '/tmp/explorer_ipc'
       @dns_port = dns_port
@@ -12,7 +12,8 @@ module Explorer
       @https_port = https_port
       @ipc_file = ipc_file
       @hostmap = hostmap
-      @process_manager = ProcessManager.new nil # TODO: Log watcher
+      @log_watcher = LogWatcher.new
+      @process_manager = ProcessManager.new log_watcher
     end
 
     def run
@@ -32,6 +33,7 @@ module Explorer
     def terminate
       @group.terminate if @group
       @process_manager.terminate if @process_manager
+      # TODO: @log_watcher.terminate if @log_watcher
     end
 
     def run!

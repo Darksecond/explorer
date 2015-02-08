@@ -29,6 +29,18 @@ module Explorer
       @socket.puts msg.to_json
     end
 
+    def tail(io = STDOUT)
+      msg = {
+        command: 'tail'
+      }
+      @socket.puts msg.to_json
+
+      loop do
+        line = @socket.readline
+        io.puts line
+      end
+    end
+
     def shutdown
       @socket.close if @socket
     end

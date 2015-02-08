@@ -11,6 +11,7 @@ module Explorer
     desc "start CONFIG", 'Start explorer'
     def start(file)
       servers = Servers.new hostmap: {'test.dev' => {host: 'localhost', port: 8080}}
+      servers.log_watcher.add(STDOUT)
       servers.run
     end
 
@@ -31,6 +32,12 @@ module Explorer
       ipc = IPCClient.new
       ipc.hostmap_add(domain, host, port)
       puts "Added #{domain} to hostmap"
+    end
+
+    desc 'tail', 'Tail log'
+    def tail
+      ipc = IPCClient.new
+      ipc.tail
     end
   end
 end
