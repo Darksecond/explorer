@@ -1,6 +1,8 @@
 # Explorer
 
-TODO: Write a gem description
+Explorer is a replacement for Pow! written in Ruby.
+
+[![Dependency Status](https://gemnasium.com/Darksecond/explorer.svg)](https://gemnasium.com/Darksecond/explorer)
 
 ## Installation
 
