@@ -2,4 +2,4 @@
 
 require 'explorer'
 
-Explorer::CLI.start(ARGV)
+Explorer::CLI::CLI.start(ARGV)
