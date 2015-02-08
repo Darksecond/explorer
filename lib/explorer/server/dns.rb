@@ -5,12 +5,12 @@ module Explorer
     class DNS < RubyDNS::Server
       def initialize(port = 23400)
         super listen: interfaces(port)
-        run
+        async.run
       end
 
       def process(name, resource_class, transaction)
         return transaction.fail!(:NXDomain) unless name_matches?(name)
-        
+
         if resource_class == Resolv::DNS::Resource::IN::A
           transaction.respond!('127.0.0.1')
         elsif resource_class == Resolv::DNS::Resource::IN::AAAA
