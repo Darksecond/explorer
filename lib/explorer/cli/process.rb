@@ -21,6 +21,40 @@ module Explorer
 
         ipc = IPCClient.new
         ipc.cmd_add(label, cmd, options[:dir])
+        puts Rainbow("Added #{label}").color(:green).bright
+      rescue Errno::ENOENT
+        puts Rainbow('Explore is not running').color(:red).bright
+      end
+
+      desc 'start LABEL', 'Start process'
+      def start(label)
+        Celluloid.logger = nil # Silence celluloid
+
+        ipc = IPCClient.new
+        ipc.cmd_start(label)
+        puts Rainbow("Started #{label}").color(:green).bright
+      rescue Errno::ENOENT
+        puts Rainbow('Explore is not running').color(:red).bright
+      end
+
+      desc 'stop LABEL', 'Stop process'
+      def stop(label)
+        Celluloid.logger = nil # Silence celluloid
+
+        ipc = IPCClient.new
+        ipc.cmd_stop(label)
+        puts Rainbow("Stopped #{label}").color(:green).bright
+      rescue Errno::ENOENT
+        puts Rainbow('Explore is not running').color(:red).bright
+      end
+
+      desc 'remove LABEL', 'Remove process'
+      def remove(label)
+        Celluloid.logger = nil # Silence celluloid
+
+        ipc = IPCClient.new
+        ipc.cmd_remove(label)
+        puts Rainbow("Removed #{label}").color(:green).bright
       rescue Errno::ENOENT
         puts Rainbow('Explore is not running').color(:red).bright
       end

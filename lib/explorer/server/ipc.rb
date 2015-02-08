@@ -40,7 +40,12 @@ module Explorer
             @servers.log_watcher.add(socket)
           when 'cmd-add'
             @servers.process_manager.add(json['label'], json['cmd'], working_dir: json['dir'] || ENV['PWD'])
-            @servers.process_manager.start(json['label']) #TODO Refactor out?
+          when 'cmd-start'
+            @servers.process_manager.start(json['label'])
+          when 'cmd-stop'
+            @servers.process_manager.stop(json['label'])
+          when 'cmd-remove'
+            @servers.process_manager.remove(json['label'])
           when 'cmd-list'
             socket.puts @servers.process_manager.processes.map { |p|
               {

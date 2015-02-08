@@ -59,6 +59,30 @@ module Explorer
       @socket.puts msg.to_json
     end
 
+    def cmd_start(label)
+      msg = {
+        command: 'cmd-start',
+        label: label,
+      }
+      @socket.puts msg.to_json
+    end
+
+    def cmd_stop(label)
+      msg = {
+        command: 'cmd-stop',
+        label: label,
+      }
+      @socket.puts msg.to_json
+    end
+
+    def cmd_remove(label)
+      msg = {
+        command: 'cmd-remove',
+        label: label,
+      }
+      @socket.puts msg.to_json
+    end
+
     def cmd_list
       msg = {
         command: 'cmd-list'
