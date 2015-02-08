@@ -1,15 +1,32 @@
+require 'celluloid/io/pty'
+
 module Explorer
   #TODO PTY & Readers
   class ProcessManager
-    include Celluloid
+    include Celluloid::IO
 
     class Process
-      attr_reader :pid, :label, :pgid
+      include Celluloid::IO
+      finalizer :shutdown
 
-      def initialize pid, label
+      attr_reader :pid, :label, :pgid, :pipe
+      def initialize pid, label, pipe
+        @pipe = pipe
         @pid = pid
         @label = label
         @pgid = ::Process.getpgid(pid)
+        async.read_log
+      end
+
+      def read_log
+        loop do
+          line = pipe.readline
+          puts "Line: #{line}"
+        end
+      end
+
+      def shutdown
+        pipe.close
       end
     end
 
@@ -17,11 +34,16 @@ module Explorer
       @processes = {}
     end
 
-    def start(label, command, working_dir: ENV['PWD'], pipe: :out)
+    def start(label, command, working_dir: ENV['PWD'])
       return @processes[label] if @processes[label]
 
-      pid = spawn_process(label, command, working_dir: working_dir, pipe: pipe)
-      @processes[label] = Process.new(pid, label)
+      master, slave = PTY.open
+      slave.raw!
+
+      pid = spawn_process(label, command, working_dir: working_dir, pipe: slave)
+      slave.close
+
+      @processes[label] = Process.new(pid, label, master)
       wait_pid(label, pid)
       @processes[label]
     end
@@ -56,6 +78,7 @@ module Explorer
     end
 
     def cleanup_pid(label)
+      @processes[label].terminate
       @processes.delete label
     end
 
