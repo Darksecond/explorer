@@ -14,12 +14,16 @@ Install it yourself as:
 ## Usage
 
 Run the following command to start up the server
+
     $ explore boot
 
 The server can be controlled using various subcommands.
 More information can be gotten by running:
+
     $ explore help proxy
+
 and
+
     $ explore help process
 
 ## Contributing
