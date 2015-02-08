@@ -8,9 +8,8 @@ require 'explorer/servers'
 require 'explorer/proxy'
 require 'explorer/request_stream'
 require 'explorer/ipc_client'
+require 'explorer/process'
 require 'explorer/process_manager'
-
-# TODO: Hostmap should be it's own actor; immutable; or thread-safe
 
 module Explorer
   DATADIR = File.expand_path(File.join(File.dirname(__FILE__), '..', 'data'))

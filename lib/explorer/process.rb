@@ -5,14 +5,25 @@ module Explorer
     finalizer :shutdown
 
     attr_reader :label, :command, :working_dir, :state, :status
-    attr_reader :pid, :pgid, :pipe
+    attr_reader :pid, :pgid, :pipe, :log_watcher
 
-    def initialize(label, command, working_dir: ENV['PWD'])
+    # Log watcher should implement a 'log' method which accepts a label and a line of text
+    # Log watcher should also be thread-safe or an actor
+    def initialize(label, command, working_dir: ENV['PWD'], log_watcher: nil)
       @label = label
       @command = command
       @working_dir = working_dir
+      @log_watcher = log_watcher
       @state = :stopped
       @status = nil
+    end
+
+    def started?
+      @state == :started
+    end
+
+    def stopped?
+      @state == :stopped
     end
 
     def start
@@ -53,10 +64,10 @@ module Explorer
 
     private
 
-    # TODO: Log output to a logger or something given to this actor
     def read_pipe
       loop do
-        puts @pipe.readline
+        line = @pipe.readline # So we don't fill up the pipe
+        log_watcher.log(label, line) if log_watcher
       end
     rescue
     end
