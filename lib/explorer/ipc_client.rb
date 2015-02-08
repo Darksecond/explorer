@@ -29,6 +29,14 @@ module Explorer
       @socket.puts msg.to_json
     end
 
+    def hostmap_remove domain
+      msg = {
+        command: 'map-remove',
+        map: domain
+      }
+      @socket.puts msg.to_json
+    end
+
     def tail(io = STDOUT)
       msg = {
         command: 'cmd-tail'

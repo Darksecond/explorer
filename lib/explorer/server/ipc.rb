@@ -34,6 +34,8 @@ module Explorer
             socket.puts @servers.hostmap.to_json
           when 'map-add'
             @servers.hostmap[json['map']] = { host: json['host'], port: json['port'].to_i }
+          when 'map-remove'
+            @servers.hostmap.delete json['map']
           when 'cmd-tail'
             @servers.log_watcher.add(socket)
           when 'cmd-add'
