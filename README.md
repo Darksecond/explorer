@@ -7,23 +7,20 @@ Explorer is a replacement for Pow! written in Ruby.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'explorer'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install it yourself as:
 
     $ gem install explorer
 
 ## Usage
 
-TODO: Write usage instructions here
+Run the following command to start up the server
+    $ explore boot
+
+The server can be controlled using various subcommands.
+More information can be gotten by running:
+    $ explore help proxy
+and
+    $ explore help process
 
 ## Contributing
 
