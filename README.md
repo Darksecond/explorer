@@ -11,6 +11,16 @@ Install it yourself as:
 
     $ gem install explorer
 
+`.dev` domain support can be installed with:
+
+    $ explore setup install
+
+And uninstalled with:
+
+    $ explore setup uninstall
+
+This will override Invoker or Pow! installation files.
+
 ## Usage
 
 Run the following command to start up the server
