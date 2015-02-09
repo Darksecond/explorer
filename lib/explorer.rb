@@ -11,6 +11,7 @@ require 'explorer/ipc_client'
 require 'explorer/process'
 require 'explorer/process_manager'
 require 'explorer/log_watcher'
+require 'explorer/setup'
 
 module Explorer
   DATADIR = File.expand_path(File.join(File.dirname(__FILE__), '..', 'data'))

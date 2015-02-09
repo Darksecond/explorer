@@ -1,6 +1,7 @@
 require 'thor'
 require 'explorer/cli/proxy'
 require 'explorer/cli/process'
+require 'explorer/cli/setup'
 
 module Explorer
   module CLI
@@ -17,6 +18,9 @@ module Explorer
 
       desc 'process SUBCOMMAND ...ARGS', 'manage processes'
       subcommand 'process', Process
+
+      desc 'setup SUBCOMMAND ...ARGS', 'manage explorer setup'
+      subcommand 'setup', Setup
 
       desc "boot [CONFIG]", 'Start explorer'
       def boot(config=nil)

@@ -1,5 +1,6 @@
 require 'rainbow'
 require 'formatador'
+require 'thor'
 
 module Explorer
   module CLI
