@@ -15,7 +15,7 @@ module Explorer
     end
 
     def remove(watcher)
-      watcher.close
+      watcher.close unless watcher.closed?
       @watchers.delete watcher
     end
 
@@ -25,7 +25,6 @@ module Explorer
           color = @label_colors[label] ||= next_color
           watcher.puts Rainbow(label).color(color).bright + " : " + line
         rescue => e
-          puts e.message
           remove(watcher)
         end
       end
