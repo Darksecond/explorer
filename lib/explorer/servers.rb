@@ -31,10 +31,10 @@ module Explorer
 
     def run!
       @group = Celluloid::SupervisionGroup.new do |group|
-        group.supervise_as :dns, Server::DNS, dns_port
-        group.supervise_as :http, Server::HTTP, http_port
-        group.supervise_as :https, Server::HTTPS, https_port
-        group.supervise_as :ipc, Server::IPC, ipc_file
+        group.supervise_as :dns, Server::DNS, @dns_port
+        group.supervise_as :http, Server::HTTP, @http_port
+        group.supervise_as :https, Server::HTTPS, @https_port
+        group.supervise_as :ipc, Server::IPC, @ipc_file
       end
     end
   end

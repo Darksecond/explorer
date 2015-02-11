@@ -25,7 +25,7 @@ module Explorer
       desc "boot [CONFIG]", 'Start explorer'
       def boot(config=nil)
         servers = Servers.new
-        servers.log_watcher.add(STDOUT)
+        Explorer.log_watcher.add(STDOUT)
         servers.run
       end
 
