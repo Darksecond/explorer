@@ -33,7 +33,7 @@ module Explorer
     def terminate
       @group.terminate if @group
       @process_manager.terminate if @process_manager
-      # TODO: @log_watcher.terminate if @log_watcher
+      @log_watcher.terminate if @log_watcher
     end
 
     def run!

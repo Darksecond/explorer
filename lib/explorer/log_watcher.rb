@@ -1,35 +1,41 @@
+require 'rainbow'
+
 module Explorer
   class LogWatcher
+    COLORS = [:red, :green, :yellow, :blue, :magenta, :cyan]
+    include Celluloid
+
     def initialize
       @watchers = []
-      @mutex = Mutex.new
+      @label_colors = {}
     end
 
-    # TODO: terminate
-
     def add(watcher)
-      @mutex.synchronize do
-        @watchers << watcher
-      end
+      @watchers << watcher
     end
 
     def remove(watcher)
-      @mutex.synchronize do
-        @watcher.close
-        @watchers.delete watcher
-      end
+      @watcher.close
+      @watchers.delete watcher
     end
 
     def log(label, line)
-      @mutex.synchronize do
-        @watchers.each do |watcher|
-          begin
-            watcher.puts "#{label}: #{line}"
-          rescue
-            remove(watcher)
-          end
+      @watchers.each do |watcher|
+        begin
+          color = @label_colors[label] ||= next_color
+          watcher.puts Rainbow(label).color(color).bright + " : " + line
+        rescue
+          remove(watcher)
         end
       end
     end
+  end
+
+  private
+
+  def next_color
+    color = COLORS.shift
+    COLORS.push color
+    color
   end
 end
