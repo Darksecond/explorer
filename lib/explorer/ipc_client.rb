@@ -44,9 +44,10 @@ module Explorer
       @socket.puts msg.to_json
 
       loop do
-        line = @socket.readline
+        line = @socket.gets
         io.puts line
       end
+    rescue IOError
     end
 
     def cmd_add(label, cmd, dir=nil)

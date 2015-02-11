@@ -9,6 +9,7 @@ module Explorer
         Celluloid.logger = nil # Silence celluloid
 
         ipc = IPCClient.new
+        trap(:INT) { Thread.new { ipc.shutdown }.join }
         ipc.tail
       rescue Errno::ENOENT
         puts Rainbow('Explore is not running').color(:red).bright
