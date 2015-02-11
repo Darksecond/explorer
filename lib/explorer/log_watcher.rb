@@ -15,7 +15,7 @@ module Explorer
     end
 
     def remove(watcher)
-      @watcher.close
+      watcher.close
       @watchers.delete watcher
     end
 
