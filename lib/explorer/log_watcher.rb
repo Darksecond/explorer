@@ -24,18 +24,19 @@ module Explorer
         begin
           color = @label_colors[label] ||= next_color
           watcher.puts Rainbow(label).color(color).bright + " : " + line
-        rescue
+        rescue => e
+          puts e.message
           remove(watcher)
         end
       end
     end
-  end
 
-  private
+    private
 
-  def next_color
-    color = COLORS.shift
-    COLORS.push color
-    color
+    def next_color
+      color = COLORS.shift
+      COLORS.push color
+      color
+    end
   end
 end
