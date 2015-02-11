@@ -3,8 +3,8 @@ require 'reel'
 module Explorer
   module Server
     class HTTP < Reel::Server::HTTP
-      def initialize(port = 23401, map={})
-        @map = map
+      def initialize(port, options={})
+        @map = options.fetch(:hostmap) { Explorer.hostmap }
 
         super '0.0.0.0', port, {}, &method(:on_connection)
       end
@@ -16,7 +16,7 @@ module Explorer
       end
 
       def handle_request(request)
-        map = @map[request.headers['Host']]
+        map = @map.resolve(request.headers['Host'])
         if map
           Proxy.new(map[:host], map[:port]).handle(request)
         else

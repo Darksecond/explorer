@@ -3,8 +3,8 @@ require 'reel'
 module Explorer
   module Server
     class HTTPS < Reel::Server::HTTPS
-      def initialize(port = 23402, map={})
-        @map = map
+      def initialize(port, options={})
+        @map = options.fetch(:hostmap) { Explorer.hostmap }
 
         options = {
           cert: File.read(File.join(Explorer::DATADIR, 'server.crt')),
@@ -20,11 +20,11 @@ module Explorer
       end
 
       def handle_request(request)
-        map = @map[request.headers['Host']]
+        map = @map.resolve(request.headers['Host'])
         if map
           Proxy.new(map[:host], map[:port]).handle(request)
         else
-          request.respond 404, "Map not found (#{request.headers['Host']}) (#{@map.inspect})"
+          request.respond 404, "Map not found (#{request.headers['Host']})"
         end
 
       end

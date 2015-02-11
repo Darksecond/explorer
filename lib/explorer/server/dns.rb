@@ -3,7 +3,7 @@ require 'rubydns'
 module Explorer
   module Server
     class DNS < RubyDNS::Server
-      def initialize(port = 23400)
+      def initialize(port)
         super listen: interfaces(port)
         async.run
       end

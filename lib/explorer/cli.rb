@@ -24,7 +24,7 @@ module Explorer
 
       desc "boot [CONFIG]", 'Start explorer'
       def boot(config=nil)
-        servers = Servers.new hostmap: {'test.dev' => {host: 'localhost', port: 8080}}
+        servers = Servers.new
         servers.log_watcher.add(STDOUT)
         servers.run
       end

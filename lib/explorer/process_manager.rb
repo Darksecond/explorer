@@ -2,8 +2,8 @@ require 'dotenv'
 
 module Explorer
   class ProcessManager
-    def initialize log_watcher = nil
-      @log_watcher = log_watcher
+    def initialize options={}
+      @log_watcher = options.fetch(:log_watcher) { Explorer.log_watcher }
       @processes = {}
     end
 
@@ -59,7 +59,7 @@ module Explorer
     private
 
     def load_env(directory = ENV['PWD'])
-      path = File.join(directory, '.env')
+      path = File.expand_path File.join(directory, '.env')
       return {} unless File.exist?(path)
       Dotenv::Environment.new(path)
     end

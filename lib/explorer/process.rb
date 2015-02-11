@@ -12,7 +12,7 @@ module Explorer
     def initialize(label, command, working_dir: ENV['PWD'], log_watcher: nil, env: {})
       @label = label
       @command = command
-      @working_dir = working_dir
+      @working_dir = File.expand_path(working_dir)
       @log_watcher = log_watcher
       @env = env
       @state = :stopped

@@ -8,10 +8,12 @@ module Explorer
       finalizer :shutdown
       attr_reader :socket_path, :server
 
-      def initialize(socket_path = '/tmp/explorer_ipc', servers)
+      def initialize(socket_path, options={})
         @socket_path = socket_path
         @server = UNIXServer.new(socket_path)
-        @servers = servers
+        @hostmap = options.fetch(:hostmap) { Explorer.hostmap }
+        @log_watcher = options.fetch(:log_watcher) { Explorer.log_watcher }
+        @process_manager = options.fetch(:process_manager) { Explorer.process_manager }
         async.run
       end
 
@@ -31,23 +33,23 @@ module Explorer
           json = JSON.parse socket.readline
           case json['command']
           when 'map-list'
-            socket.puts @servers.hostmap.to_json
+            socket.puts @hostmap.mappings.to_json
           when 'map-add'
-            @servers.hostmap[json['map']] = { host: json['host'], port: json['port'].to_i }
+            @hostmap.add json['map'], json['host'], json['port'].to_i
           when 'map-remove'
-            @servers.hostmap.delete json['map']
+            @hostmap.remove json['map']
           when 'cmd-tail'
-            @servers.log_watcher.add(socket)
+            @log_watcher.add(socket)
           when 'cmd-add'
-            @servers.process_manager.add(json['label'], json['cmd'], working_dir: json['dir'] || ENV['PWD'])
+            @process_manager.add(json['label'], json['cmd'], working_dir: json['dir'] || ENV['PWD'])
           when 'cmd-start'
-            @servers.process_manager.start(json['label'])
+            @process_manager.start(json['label'])
           when 'cmd-stop'
-            @servers.process_manager.stop(json['label'])
+            @process_manager.stop(json['label'])
           when 'cmd-remove'
-            @servers.process_manager.remove(json['label'])
+            @process_manager.remove(json['label'])
           when 'cmd-list'
-            socket.puts @servers.process_manager.processes.map { |p|
+            socket.puts @process_manager.processes.map { |p|
               {
                 label: p.label,
                 cmd: p.command,

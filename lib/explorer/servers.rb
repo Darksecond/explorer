@@ -1,19 +1,12 @@
 require 'celluloid'
 
 module Explorer
-  # TODO: Hostmap should be it's own actor; immutable; or thread-safe
   class Servers
-    attr_reader :dns_port, :http_port, :https_port, :ipc_file
-    attr_reader :hostmap, :process_manager, :log_watcher
-
-    def initialize dns_port: 23400, http_port: 23401, https_port: 23402, hostmap: {}, ipc_file: '/tmp/explorer_ipc'
-      @dns_port = dns_port
-      @http_port = http_port
-      @https_port = https_port
-      @ipc_file = ipc_file
-      @hostmap = hostmap
-      @log_watcher = LogWatcher.new
-      @process_manager = ProcessManager.new log_watcher
+    def initialize options={}
+      @dns_port = options.fetch(:dns_port) { 23400 }
+      @http_port = options.fetch(:http_port) { 23401 }
+      @https_port = options.fetch(:https_port) { 23402 }
+      @ipc_file = options.fetch(:ipc_file) { '/tmp/explorer_ipc' }
     end
 
     def run
@@ -30,18 +23,18 @@ module Explorer
       terminate
     end
 
+    # Do I need this?
     def terminate
       @group.terminate if @group
-      @process_manager.terminate if @process_manager
-      @log_watcher.terminate if @log_watcher
+      Explorer.terminate
     end
 
     def run!
       @group = Celluloid::SupervisionGroup.new do |group|
         group.supervise_as :dns, Server::DNS, dns_port
-        group.supervise_as :http, Server::HTTP, http_port, hostmap
-        group.supervise_as :https, Server::HTTPS, https_port, hostmap
-        group.supervise_as :ipc, Server::IPC, ipc_file, self
+        group.supervise_as :http, Server::HTTP, http_port
+        group.supervise_as :https, Server::HTTPS, https_port
+        group.supervise_as :ipc, Server::IPC, ipc_file
       end
     end
   end
