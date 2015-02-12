@@ -17,6 +17,7 @@ module Explorer
     end
 
     def resolve domain
+      domain = domain.gsub(/\d+.\d+.\d+.\d+.xip.io/, 'dev') #Support xip.io
       parts = domain.split '.'
       map = nil
       while !parts.empty? && map.nil? do
@@ -25,5 +26,6 @@ module Explorer
       end
       map
     end
+
   end
 end
