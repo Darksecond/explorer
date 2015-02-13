@@ -27,6 +27,8 @@ module Explorer
       end
     rescue Errno::ECONNREFUSED
       reel_request.respond 504, 'Could not connect to upstream server'
+    rescue Net::ReadTimeout
+      reel_request.respond 599, 'Upstream timed out'
     end
 
     private
