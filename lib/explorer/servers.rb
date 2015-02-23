@@ -38,6 +38,7 @@ module Explorer
     end
 
     def run!
+      Celluloid.logger = Explorer.log_watcher.logger
       @group = Celluloid::SupervisionGroup.new do |group|
         group.supervise_as :dns, Server::DNS, @dns_port
         group.supervise_as :http, Server::HTTP, @http_port

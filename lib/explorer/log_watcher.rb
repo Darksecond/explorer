@@ -30,7 +30,25 @@ module Explorer
       end
     end
 
+    def logger(label='system')
+      @logger ||= ::Logger.new(LogDevice.new(self, label))
+    end
+
     private
+
+    class LogDevice
+      def initialize(watcher, label='system')
+        @watcher = watcher
+        @label = label
+      end
+
+      def close
+      end
+
+      def write(data)
+        @watcher.log(@label, data)
+      end
+    end
 
     def next_color
       color = COLORS.shift
