@@ -1,4 +1,5 @@
 require 'dotenv'
+require 'yaml'
 
 module Explorer
   class ProcessManager
@@ -54,6 +55,26 @@ module Explorer
 
     def labels
       @processes.keys
+    end
+
+    def load file
+      return unless File.exist? file
+
+      yaml = YAML.load_file file
+      yaml.each do |cfg|
+        add(cfg[:label], cfg[:command], working_dir: cfg[:working_dir])
+      end
+    end
+
+    def save file
+      Dir.mkdir File.dirname(file) unless Dir.exist?(File.dirname(file))
+      File.write file, YAML.dump(processes.map do |p|
+        {
+          label: p.label,
+          command: p.command,
+          working_dir: p.working_dir
+        }
+      end)
     end
 
     private

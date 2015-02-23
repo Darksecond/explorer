@@ -22,8 +22,8 @@ module Explorer
       desc 'setup SUBCOMMAND ...ARGS', 'manage explorer setup'
       subcommand 'setup', Setup
 
-      desc "boot [CONFIG]", 'Start explorer'
-      def boot(config=nil)
+      desc "boot", 'Start explorer'
+      def boot
         servers = Servers.new
         Explorer.log_watcher.add(STDOUT)
         servers.run

@@ -16,6 +16,7 @@ require 'explorer/setup'
 
 module Explorer
   DATADIR = File.expand_path(File.join(File.dirname(__FILE__), '..', 'data'))
+  CONFIGDIR = File.join(Dir.home, '.explorer')
 
   def self.hostmap
     @hostmap ||= Hostmap.new

@@ -17,10 +17,18 @@ module Explorer
       # Start servers
       run!
 
+      # Load configuration
+      load
+
       IO.select([read]) # Wait for trap
 
       # Cleanup
       terminate
+    end
+
+    def load
+      Explorer.hostmap.load File.join(Explorer::CONFIGDIR, 'hostmap.yaml')
+      Explorer.process_manager.load File.join(Explorer::CONFIGDIR, 'process.yaml')
     end
 
     # Do I need this?

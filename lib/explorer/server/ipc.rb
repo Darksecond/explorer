@@ -36,18 +36,24 @@ module Explorer
             socket.puts @hostmap.mappings.to_json
           when 'map-add'
             @hostmap.add json['map'], json['host'], json['port'].to_i
+            @hostmap.save File.join(Explorer::CONFIGDIR, 'hostmap.yaml') # TODO: Refactor filename
           when 'map-remove'
             @hostmap.remove json['map']
+            @hostmap.save File.join(Explorer::CONFIGDIR, 'hostmap.yaml')
           when 'cmd-tail'
             @log_watcher.add(socket)
           when 'cmd-add'
             @process_manager.add(json['label'], json['cmd'], working_dir: json['dir'] || ENV['PWD'])
+            @process_manager.save File.join(Explorer::CONFIGDIR, 'process.yaml')
           when 'cmd-start'
             @process_manager.start(json['label'])
+            @process_manager.save File.join(Explorer::CONFIGDIR, 'process.yaml')
           when 'cmd-stop'
             @process_manager.stop(json['label'])
+            @process_manager.save File.join(Explorer::CONFIGDIR, 'process.yaml')
           when 'cmd-remove'
             @process_manager.remove(json['label'])
+            @process_manager.save File.join(Explorer::CONFIGDIR, 'process.yaml')
           when 'cmd-list'
             socket.puts @process_manager.processes.map { |p|
               {

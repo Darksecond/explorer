@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Explorer
   class Hostmap
     include Celluloid
@@ -27,5 +29,16 @@ module Explorer
       map
     end
 
+    def save file
+      Dir.mkdir File.dirname(file) unless Dir.exist?(File.dirname(file))
+      File.write file, YAML.dump(mappings)
+    end
+
+    def load file
+      return unless File.exist? file
+
+      yaml = YAML.load_file file
+      @mappings = yaml
+    end
   end
 end
