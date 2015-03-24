@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'celluloid', '~> 0.16'
   spec.add_dependency 'celluloid-io', '~> 0.16'
-  spec.add_dependency 'dotenv', '~> 1.0'
+  spec.add_dependency 'dotenv', '~> 2.0'
   spec.add_dependency 'rainbow', '~> 2.0'
   spec.add_dependency 'formatador', '~> 0.2'
 end
