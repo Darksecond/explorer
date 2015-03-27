@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
 
   spec.add_dependency 'rubydns', '~> 1.0'
-  spec.add_dependency 'reel', '~> 0.5'
+  spec.add_dependency 'reel', '~> 0.6.0.pre1'
   spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'celluloid', '~> 0.16'
   spec.add_dependency 'celluloid-io', '~> 0.16'
